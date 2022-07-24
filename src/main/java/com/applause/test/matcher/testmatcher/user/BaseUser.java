@@ -1,7 +1,5 @@
 package com.applause.test.matcher.testmatcher.user;
 
-import java.time.LocalDateTime;
-
 public abstract class BaseUser {
 
     private String id;

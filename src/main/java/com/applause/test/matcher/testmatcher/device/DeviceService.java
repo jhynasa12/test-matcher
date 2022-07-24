@@ -1,4 +1,4 @@
-package com.applause.test.matcher.testmatcher.devices;
+package com.applause.test.matcher.testmatcher.device;
 
 import java.util.List;
 
