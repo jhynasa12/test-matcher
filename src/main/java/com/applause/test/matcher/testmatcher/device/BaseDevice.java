@@ -6,9 +6,9 @@ import javax.persistence.*;
 public abstract class BaseDevice {
 
     @Id
-    @Column(name = "DEVICE_ID")
+    @Column(name = "device_id")
     private Long deviceId;
-    @Column(name = "DESCRIPTION")
+    @Column(name = "description")
     private String description;
 
     public Long getDeviceId() {
