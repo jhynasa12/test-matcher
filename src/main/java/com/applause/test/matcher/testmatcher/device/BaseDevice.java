@@ -1,5 +1,6 @@
 package com.applause.test.matcher.testmatcher.device;
 
+
 import javax.persistence.*;
 
 @MappedSuperclass

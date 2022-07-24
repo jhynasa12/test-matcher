@@ -14,6 +14,8 @@ public class DataConfig {
     private String testers;
     @Value("${bugs.location}")
     private String bugs;
+    @Value("${tester.device.location}")
+    private String testerDevice;
 
     public String getDevices() {
         return devices;
@@ -25,5 +27,9 @@ public class DataConfig {
 
     public String getBugs() {
         return bugs;
+    }
+
+    public String getTesterDevice() {
+        return testerDevice;
     }
 }

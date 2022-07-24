@@ -19,3 +19,10 @@ CREATE TABLE bugs_devices_testers
     device_id int NOT NULL references devices(device_id),
     tester_id int NOT NULL references testers(tester_id)
 );
+
+CREATE TABLE tester_device
+(
+    id SERIAL NOT NULL PRIMARY KEY,
+    tester_id  int NOT NULL references testers(tester_id),
+    device_id int NOT NULL references devices(device_id)
+);

@@ -1,6 +1,7 @@
 package com.applause.test.matcher.testmatcher.tester;
 
 import com.applause.test.matcher.testmatcher.bug.Bug;
+import com.applause.test.matcher.testmatcher.device.Mobile;
 
 import javax.persistence.*;
 import java.util.List;
@@ -23,6 +24,12 @@ public class Tester {
     private String lastLogin;
 
     @Transient private List<Bug> bugs;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "tester_device",
+            joinColumns = @JoinColumn(name = "tester_id" , referencedColumnName = "tester_id"),
+            inverseJoinColumns = @JoinColumn(name = "device_id", referencedColumnName = "device_id"))
+    private List<Mobile> mobileDevices;
 
     public Long getTesterId() {
         return testerId;
@@ -71,4 +78,29 @@ public class Tester {
     public void setBugs(List<Bug> bugs) {
         this.bugs = bugs;
     }
+
+    public List<Mobile> getMobileDevices() {
+        return mobileDevices;
+    }
+
+    public void setMobileDevices(List<Mobile> devices) {
+        this.mobileDevices = devices;
+    }
 }
+
+
+//public class Professor {
+//    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//    @JoinTable(name = "ALUNO_PROFESSOR",
+//            joinColumns = @JoinColumn(name = "idProfessor", referencedColumnName = "idProfessor"),
+//            inverseJoinColumns = @JoinColumn(name = "idAluno", referencedColumnName = "idAluno"))
+//    private List<Aluno> alunoList;
+//}
+//
+//public class Aluno {
+//    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//    @JoinTable(name = "ALUNO_PROFESSOR",
+//            joinColumns = @JoinColumn(name = "idAluno", referencedColumnName = "idAluno"),
+//            inverseJoinColumns = @JoinColumn(name = "idProfessor", referencedColumnName = "idProfessor"))
+//    private List<Professor> professorList;
+//}
