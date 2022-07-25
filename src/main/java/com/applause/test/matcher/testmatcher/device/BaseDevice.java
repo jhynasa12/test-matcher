@@ -1,10 +1,15 @@
 package com.applause.test.matcher.testmatcher.device;
 
 
+
+
 import javax.persistence.*;
 
-@MappedSuperclass
-public abstract class BaseDevice {
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="device_type",
+        discriminatorType = DiscriminatorType.INTEGER)
+public class BaseDevice {
 
     @Id
     @Column(name = "device_id")

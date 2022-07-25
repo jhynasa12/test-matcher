@@ -1,7 +1,8 @@
-CREATE TABLE devices
+CREATE TABLE basedevice
 (
     device_id  int NOT NULL PRIMARY KEY ,
-    description text
+    description text,
+    device_type int
 );
 
 CREATE TABLE testers
@@ -13,16 +14,17 @@ CREATE TABLE testers
     last_login text
 );
 
-CREATE TABLE bugs_devices_testers
+CREATE TABLE bugs
 (
     bug_id  int NOT NULL PRIMARY KEY ,
-    device_id int NOT NULL references devices(device_id),
-    tester_id int NOT NULL references testers(tester_id)
+    device_id int NOT NULL references basedevice(device_id),
+    fk_tester_id INT,
+    FOREIGN KEY (fk_tester_id) REFERENCES testers(tester_id)
 );
 
 CREATE TABLE tester_device
 (
     id SERIAL NOT NULL PRIMARY KEY,
     tester_id  int NOT NULL references testers(tester_id),
-    device_id int NOT NULL references devices(device_id)
+    device_id int NOT NULL references basedevice(device_id)
 );

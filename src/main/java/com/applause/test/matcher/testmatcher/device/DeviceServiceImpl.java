@@ -3,6 +3,7 @@ package com.applause.test.matcher.testmatcher.device;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,5 +19,11 @@ public class DeviceServiceImpl implements DeviceService {
     @Override
     public List<BaseDevice> getAllDevices() {
      return deviceRepository.findAll();
+    }
+
+    public static List<MobileDto> mapToMobileDto(List<Mobile> mobileList) {
+        List<MobileDto> mobileDtos = new ArrayList<>();
+        mobileList.forEach(mobile -> mobileDtos.add(new MobileDto(String.valueOf(mobile.getDeviceId()), mobile.getDescription())));
+        return mobileDtos;
     }
 }

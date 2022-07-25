@@ -4,4 +4,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TesterDeviceMapperRepository extends JpaRepository<TesterDeviceMapper, Long> {
 
+    Integer countTesterDeviceMapperByTesterIdAndDeviceId(Long testerId, Long deviceId);
 }

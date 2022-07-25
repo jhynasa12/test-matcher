@@ -7,17 +7,18 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "devices")
-public class Mobile extends BaseDevice {
+@DiscriminatorValue("1")
+public class Mobile extends BaseDevice{
 
     @ManyToMany(mappedBy = "mobileDevices" ,fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Tester> testers;
-    @Transient
-    private List<Bug> bugs;
 
     public Mobile() {
         super();
     }
+
+    @Transient
+    private List<Bug> bugs;
 
     public List<Bug> getBugs() {
         return bugs;

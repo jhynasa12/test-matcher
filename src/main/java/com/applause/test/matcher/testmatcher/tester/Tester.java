@@ -23,7 +23,8 @@ public class Tester {
     @Column(name = "last_login")
     private String lastLogin;
 
-    @Transient private List<Bug> bugs;
+    @OneToMany(mappedBy="tester")
+    private List<Bug> bugs;
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "tester_device",

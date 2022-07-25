@@ -1,12 +1,11 @@
 package com.applause.test.matcher.testmatcher.bug;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.applause.test.matcher.testmatcher.tester.Tester;
+
+import javax.persistence.*;
 
 @Entity
-@Table(name = "bugs_devices_testers")
+@Table(name = "bugs")
 public class Bug {
 
     @Id
@@ -14,8 +13,12 @@ public class Bug {
     private Long bugId;
     @Column(name = "device_id")
     private Long deviceId;
-    @Column(name ="tester_id")
+    @Column(name ="fk_tester_id")
     private Long testerId;
+
+    @ManyToOne
+    @JoinColumn(name = "fk_tester_id", nullable = false, insertable = false, updatable = false)
+    private Tester tester;
 
     public Long getBugId() {
         return bugId;
@@ -39,5 +42,13 @@ public class Bug {
 
     public void setDeviceId(Long deviceId) {
         this.deviceId = deviceId;
+    }
+
+    public Tester getTester() {
+        return tester;
+    }
+
+    public void setTester(Tester tester) {
+        this.tester = tester;
     }
 }
