@@ -9,15 +9,15 @@ import java.util.List;
 @RestController
 public class TesterController implements TesterApi {
 
-    private final TesterService testerService;
+  private final TesterService testerService;
 
-    @Autowired
-    public TesterController(TesterService testerService) {
-        this.testerService = testerService;
-    }
+  @Autowired
+  public TesterController(TesterService testerService) {
+    this.testerService = testerService;
+  }
 
-    @Override
-    public List<TesterDto> getMostExperiencedTesters(String country, String deviceId) {
-        return testerService.getMostExperiencedTesters(Country.US, deviceId);
-    }
+  @Override
+  public List<TesterDto> getMostExperiencedTesters(String country, String deviceId) {
+    return testerService.getMostExperiencedTesters(Country.US, deviceId);
+  }
 }

@@ -8,28 +8,31 @@ import org.springframework.context.annotation.Configuration;
 @EnableConfigurationProperties
 public class DataConfig {
 
-    @Value("${devices.location}")
-    private String devices;
-    @Value("${testers.location}")
-    private String testers;
-    @Value("${bugs.location}")
-    private String bugs;
-    @Value("${tester.device.location}")
-    private String testerDevice;
+  @Value("${devices.location}")
+  private String devices;
 
-    public String getDevices() {
-        return devices;
-    }
+  @Value("${testers.location}")
+  private String testers;
 
-    public String getTesters() {
-        return testers;
-    }
+  @Value("${bugs.location}")
+  private String bugs;
 
-    public String getBugs() {
-        return bugs;
-    }
+  @Value("${tester.device.location}")
+  private String testerDevice;
 
-    public String getTesterDevice() {
-        return testerDevice;
-    }
+  public String getDevices() {
+    return devices;
+  }
+
+  public String getTesters() {
+    return testers;
+  }
+
+  public String getBugs() {
+    return bugs;
+  }
+
+  public String getTesterDevice() {
+    return testerDevice;
+  }
 }

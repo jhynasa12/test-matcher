@@ -1,31 +1,28 @@
 package com.applause.test.matcher.testmatcher.device;
 
-
-
-
 import javax.persistence.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name="device_type",
-        discriminatorType = DiscriminatorType.INTEGER)
+@DiscriminatorColumn(name = "device_type", discriminatorType = DiscriminatorType.INTEGER)
 public class BaseDevice {
 
-    @Id
-    @Column(name = "device_id")
-    private Long deviceId;
-    @Column(name = "description")
-    private String description;
+  @Id
+  @Column(name = "device_id")
+  private Long deviceId;
 
-    public Long getDeviceId() {
-        return deviceId;
-    }
+  @Column(name = "description")
+  private String description;
 
-    public String getDescription() {
-        return description;
-    }
+  public Long getDeviceId() {
+    return deviceId;
+  }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
 }

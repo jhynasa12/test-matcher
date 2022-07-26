@@ -10,98 +10,103 @@ import java.util.List;
 @Table(name = "testers")
 public class Tester {
 
-    @Id
-    @Column(name= "tester_id")
-    private Long testerId;
-    @Column(name = "first_name")
-    private String firstName;
-    @Column(name = "last_name")
-    private String lastName;
-    @Column(name = "country")
-    @Enumerated(EnumType.STRING)
-    private Country country;
-    @Column(name = "last_login")
-    private String lastLogin;
+  @Id
+  @Column(name = "tester_id")
+  private Long testerId;
 
-    @OneToMany(mappedBy="tester")
-    private List<Bug> bugs;
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "tester_device",
-            joinColumns = @JoinColumn(name = "tester_id" , referencedColumnName = "tester_id"),
-            inverseJoinColumns = @JoinColumn(name = "device_id", referencedColumnName = "device_id"))
-    private List<Mobile> mobileDevices;
+  @Column(name = "first_name")
+  private String firstName;
 
-    public Long getTesterId() {
-        return testerId;
-    }
+  @Column(name = "last_name")
+  private String lastName;
 
-    public void setTesterId(Long testerId) {
-        this.testerId = testerId;
-    }
+  @Column(name = "country")
+  @Enumerated(EnumType.STRING)
+  private Country country;
 
-    public String getFirstName() {
-        return firstName;
-    }
+  @Column(name = "last_login")
+  private String lastLogin;
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+  @OneToMany(mappedBy = "tester")
+  private List<Bug> bugs;
 
-    public String getLastName() {
-        return lastName;
-    }
+  @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  @JoinTable(
+      name = "tester_device",
+      joinColumns = @JoinColumn(name = "tester_id", referencedColumnName = "tester_id"),
+      inverseJoinColumns = @JoinColumn(name = "device_id", referencedColumnName = "device_id"))
+  private List<Mobile> mobileDevices;
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+  public Long getTesterId() {
+    return testerId;
+  }
 
-    public Country getCountry() {
-        return country;
-    }
+  public void setTesterId(Long testerId) {
+    this.testerId = testerId;
+  }
 
-    public void setCountry(Country country) {
-        this.country = country;
-    }
+  public String getFirstName() {
+    return firstName;
+  }
 
-    public String getLastLogin() {
-        return lastLogin;
-    }
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
 
-    public void setLastLogin(String lastLogin) {
-        this.lastLogin = lastLogin;
-    }
+  public String getLastName() {
+    return lastName;
+  }
 
-    public List<Bug> getBugs() {
-        return bugs;
-    }
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
 
-    public void setBugs(List<Bug> bugs) {
-        this.bugs = bugs;
-    }
+  public Country getCountry() {
+    return country;
+  }
 
-    public List<Mobile> getMobileDevices() {
-        return mobileDevices;
-    }
+  public void setCountry(Country country) {
+    this.country = country;
+  }
 
-    public void setMobileDevices(List<Mobile> devices) {
-        this.mobileDevices = devices;
-    }
+  public String getLastLogin() {
+    return lastLogin;
+  }
+
+  public void setLastLogin(String lastLogin) {
+    this.lastLogin = lastLogin;
+  }
+
+  public List<Bug> getBugs() {
+    return bugs;
+  }
+
+  public void setBugs(List<Bug> bugs) {
+    this.bugs = bugs;
+  }
+
+  public List<Mobile> getMobileDevices() {
+    return mobileDevices;
+  }
+
+  public void setMobileDevices(List<Mobile> devices) {
+    this.mobileDevices = devices;
+  }
 }
 
-
-//public class Professor {
+// public class Professor {
 //    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 //    @JoinTable(name = "ALUNO_PROFESSOR",
 //            joinColumns = @JoinColumn(name = "idProfessor", referencedColumnName = "idProfessor"),
 //            inverseJoinColumns = @JoinColumn(name = "idAluno", referencedColumnName = "idAluno"))
 //    private List<Aluno> alunoList;
-//}
+// }
 //
-//public class Aluno {
+// public class Aluno {
 //    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 //    @JoinTable(name = "ALUNO_PROFESSOR",
 //            joinColumns = @JoinColumn(name = "idAluno", referencedColumnName = "idAluno"),
-//            inverseJoinColumns = @JoinColumn(name = "idProfessor", referencedColumnName = "idProfessor"))
+//            inverseJoinColumns = @JoinColumn(name = "idProfessor", referencedColumnName =
+// "idProfessor"))
 //    private List<Professor> professorList;
-//}
+// }

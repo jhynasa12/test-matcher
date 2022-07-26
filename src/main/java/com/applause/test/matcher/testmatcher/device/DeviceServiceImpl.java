@@ -9,21 +9,24 @@ import java.util.List;
 @Service
 public class DeviceServiceImpl implements DeviceService {
 
-    private final DeviceRepository deviceRepository;
+  private final DeviceRepository deviceRepository;
 
-    @Autowired
-    public DeviceServiceImpl(DeviceRepository deviceRepository) {
-        this.deviceRepository = deviceRepository;
-    }
+  @Autowired
+  public DeviceServiceImpl(DeviceRepository deviceRepository) {
+    this.deviceRepository = deviceRepository;
+  }
 
-    @Override
-    public List<BaseDevice> getAllDevices() {
-     return deviceRepository.findAll();
-    }
+  @Override
+  public List<BaseDevice> getAllDevices() {
+    return deviceRepository.findAll();
+  }
 
-    public static List<MobileDto> mapToMobileDto(List<Mobile> mobileList) {
-        List<MobileDto> mobileDtos = new ArrayList<>();
-        mobileList.forEach(mobile -> mobileDtos.add(new MobileDto(String.valueOf(mobile.getDeviceId()), mobile.getDescription())));
-        return mobileDtos;
-    }
+  public static List<MobileDto> mapToMobileDto(List<Mobile> mobileList) {
+    List<MobileDto> mobileDtos = new ArrayList<>();
+    mobileList.forEach(
+        mobile ->
+            mobileDtos.add(
+                new MobileDto(String.valueOf(mobile.getDeviceId()), mobile.getDescription())));
+    return mobileDtos;
+  }
 }

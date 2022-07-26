@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface TesterRepository extends JpaRepository<Tester, Long> {
 
-    List<Tester> findAllByCountry(Country country);
+  List<Tester> findAllByCountry(Country country);
 }

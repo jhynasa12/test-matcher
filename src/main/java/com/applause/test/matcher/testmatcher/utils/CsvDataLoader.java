@@ -17,18 +17,17 @@ import java.util.List;
 @EnableAutoConfiguration
 public class CsvDataLoader {
 
-    public <T> List<T> loadObjectList(Class<T> type, String fileName) {
-        Logger logger = LoggerFactory.getLogger(CsvDataLoader.class);
-        try {
-            CsvSchema bootstrapSchema = CsvSchema.emptySchema().withHeader();
-            CsvMapper mapper = new CsvMapper();
-            File file = new ClassPathResource(fileName).getFile();
-            MappingIterator<T> readValues =
-                    mapper.readerFor(type).with(bootstrapSchema).readValues(file);
-            return readValues.readAll();
-        } catch (Exception e) {
-            logger.error("Error occurred while loading object list from file " + fileName, e);
-            return Collections.emptyList();
-        }
+  public <T> List<T> loadObjectList(Class<T> type, String fileName) {
+    Logger logger = LoggerFactory.getLogger(CsvDataLoader.class);
+    try {
+      CsvSchema bootstrapSchema = CsvSchema.emptySchema().withHeader();
+      CsvMapper mapper = new CsvMapper();
+      File file = new ClassPathResource(fileName).getFile();
+      MappingIterator<T> readValues = mapper.readerFor(type).with(bootstrapSchema).readValues(file);
+      return readValues.readAll();
+    } catch (Exception e) {
+      logger.error("Error occurred while loading object list from file " + fileName, e);
+      return Collections.emptyList();
     }
+  }
 }

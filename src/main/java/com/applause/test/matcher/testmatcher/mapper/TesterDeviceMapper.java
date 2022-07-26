@@ -8,36 +8,38 @@ import javax.persistence.*;
 @Table(name = "tester_device")
 public class TesterDeviceMapper {
 
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Long id;
-    @Column(name = "tester_id")
-    private Long testerId;
-    @Column(name = "device_id")
-    private Long deviceId;
+  @Id
+  @Column(name = "id")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    public Long getId() {
-        return id;
-    }
+  @Column(name = "tester_id")
+  private Long testerId;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  @Column(name = "device_id")
+  private Long deviceId;
 
-    public Long getTesterId() {
-        return testerId;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public void setTesterId(Long testerId) {
-        this.testerId = testerId;
-    }
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-    public Long getDeviceId() {
-        return deviceId;
-    }
+  public Long getTesterId() {
+    return testerId;
+  }
 
-    public void setDeviceId(Long deviceId) {
-        this.deviceId = deviceId;
-    }
+  public void setTesterId(Long testerId) {
+    this.testerId = testerId;
+  }
+
+  public Long getDeviceId() {
+    return deviceId;
+  }
+
+  public void setDeviceId(Long deviceId) {
+    this.deviceId = deviceId;
+  }
 }

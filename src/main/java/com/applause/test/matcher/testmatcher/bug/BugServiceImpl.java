@@ -6,18 +6,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class BugServiceImpl implements BugService {
 
-    private BugRepository bugRepository;
+  private BugRepository bugRepository;
 
-    @Autowired
-    public BugServiceImpl(BugRepository bugRepository) {
-        this.bugRepository = bugRepository;
-    }
+  @Autowired
+  public BugServiceImpl(BugRepository bugRepository) {
+    this.bugRepository = bugRepository;
+  }
 
-    @Override
-    public Integer getNumberOfBugsFiledByTesterWithDevice(Long testerId, Long deviceId) {
-        return bugRepository.countAllByTesterIdAndDeviceId(testerId, deviceId);
-    }
-
-
-
+  @Override
+  public Integer getNumberOfBugsFiledByTesterWithDevice(Long testerId, Long deviceId) {
+    return bugRepository.countAllByTesterIdAndDeviceId(testerId, deviceId);
+  }
 }

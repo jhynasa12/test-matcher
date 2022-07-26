@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface BugRepository extends JpaRepository<Bug, Long> {
 
-    List<Bug> findAllByTesterId(Long testerId);
-    Integer countAllByTesterIdAndDeviceId(Long testerId, Long deviceId);
+  List<Bug> findAllByTesterId(Long testerId);
 
+  Integer countAllByTesterIdAndDeviceId(Long testerId, Long deviceId);
 }
