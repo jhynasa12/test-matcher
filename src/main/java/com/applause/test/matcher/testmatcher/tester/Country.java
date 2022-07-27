@@ -4,4 +4,5 @@ public enum Country {
   US,
   GB,
   JP,
+  ALL
 }

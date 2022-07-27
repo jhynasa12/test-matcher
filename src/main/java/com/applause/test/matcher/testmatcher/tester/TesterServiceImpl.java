@@ -3,6 +3,7 @@ package com.applause.test.matcher.testmatcher.tester;
 import com.applause.test.matcher.testmatcher.bug.Bug;
 import com.applause.test.matcher.testmatcher.bug.BugService;
 import com.applause.test.matcher.testmatcher.device.*;
+import com.applause.test.matcher.testmatcher.mapper.TesterDeviceMapper;
 import com.applause.test.matcher.testmatcher.utils.Utility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,11 +44,22 @@ public class TesterServiceImpl implements TesterService {
       testersList = testerRepository.findAllByCountryIn(convertedCountries);
     }
 
+    if (deviceIds != null && deviceIds.contains(0L)) {
+      deviceIds =
+          deviceService.getAllDevices().stream()
+              .map(BaseDevice::getDeviceId)
+              .collect(Collectors.toSet());
+    }
     processTesterBugInformation(testersList, deviceIds);
 
     testersList.forEach(tester -> experiencedTesters.add(mapToTestDto(tester)));
-    // order the users with the highest bug count for that device
-    // Arrays.sort(experiencedTesters)
+
+    // order the testers with the highest bug count for that device
+    experiencedTesters.forEach(
+        tester ->
+            tester
+                .getMobileDevices()
+                .sort(Comparator.comparing(MobileDto::getNumberOfBugsByTester).reversed()));
 
     return experiencedTesters;
   }
