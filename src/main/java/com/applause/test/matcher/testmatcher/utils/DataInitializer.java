@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -96,9 +98,20 @@ public class DataInitializer {
 
     System.out.println("Bug 1: Get Tester: " + bug1.getFirstName());
 
+    Set<String> countries = new HashSet<>();
+
+    countries.add("GB");
+    countries.add("US");
+
+    Set<Long> devices = new HashSet<>();
+
+    devices.add(3L);
+    devices.add(2L);
+
+
     System.out.println(
         "Experienced Testers "
-            + testerService.getMostExperiencedTesters(Country.GB, "3").stream()
+            + testerService.getMostExperiencedTesters(countries, devices).stream()
                 .map(TesterDto::getFirstName)
                 .collect(Collectors.toSet()));
   }

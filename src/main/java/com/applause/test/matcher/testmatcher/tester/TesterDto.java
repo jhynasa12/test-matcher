@@ -1,5 +1,6 @@
 package com.applause.test.matcher.testmatcher.tester;
 
+import com.applause.test.matcher.testmatcher.bug.BugDto;
 import com.applause.test.matcher.testmatcher.device.MobileDto;
 
 import java.util.List;
@@ -12,6 +13,7 @@ public class TesterDto {
   private String country;
   private String lastLogin;
   private List<MobileDto> mobileDevices;
+  private List<BugDto> bugs;
 
   public TesterDto(
       String testerId,
@@ -68,11 +70,11 @@ public class TesterDto {
     this.lastLogin = lastLogin;
   }
 
-  public List<MobileDto> getMobileDtoDevices() {
+  public List<MobileDto> getMobileDevices() {
     return mobileDevices;
   }
 
-  public void setMobileDtoDevices(List<MobileDto> mobileDevices) {
+  public void setMobileDevices(List<MobileDto> mobileDevices) {
     this.mobileDevices = mobileDevices;
   }
 }

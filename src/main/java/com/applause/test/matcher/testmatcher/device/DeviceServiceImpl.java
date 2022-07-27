@@ -26,7 +26,10 @@ public class DeviceServiceImpl implements DeviceService {
     mobileList.forEach(
         mobile ->
             mobileDtos.add(
-                new MobileDto(String.valueOf(mobile.getDeviceId()), mobile.getDescription())));
+                new MobileDto(
+                    String.valueOf(mobile.getDeviceId()),
+                    mobile.getDescription(),
+                    mobile.getNumberOfBugsByTester())));
     return mobileDtos;
   }
 }

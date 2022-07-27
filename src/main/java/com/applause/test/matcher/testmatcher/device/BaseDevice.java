@@ -14,8 +14,15 @@ public class BaseDevice {
   @Column(name = "description")
   private String description;
 
+  @Transient
+  private Integer numberOfBugsByTester = 0;
+
   public Long getDeviceId() {
     return deviceId;
+  }
+
+  public void setDeviceId(Long deviceId) {
+    this.deviceId = deviceId;
   }
 
   public String getDescription() {
@@ -24,5 +31,13 @@ public class BaseDevice {
 
   public void setDescription(String description) {
     this.description = description;
+  }
+
+  public Integer getNumberOfBugsByTester() {
+    return numberOfBugsByTester;
+  }
+
+  public void setNumberOfBugsByTester(Integer numberOfBugsByTester) {
+    this.numberOfBugsByTester = numberOfBugsByTester;
   }
 }

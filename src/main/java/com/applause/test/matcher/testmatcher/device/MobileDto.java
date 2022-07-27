@@ -1,20 +1,17 @@
 package com.applause.test.matcher.testmatcher.device;
 
-import com.applause.test.matcher.testmatcher.tester.TesterDto;
-
-import java.util.List;
-
 public class MobileDto {
 
   private String deviceId;
   private String description;
-  private List<TesterDto> testers;
+  private Integer numberOfBugsByTester;
 
   public MobileDto() {}
 
-  public MobileDto(String deviceId, String description) {
+  public MobileDto(String deviceId, String description, Integer numberOfBugsByTester) {
     this.deviceId = deviceId;
     this.description = description;
+    this.numberOfBugsByTester = numberOfBugsByTester;
   }
 
   public String getDeviceId() {
@@ -33,11 +30,11 @@ public class MobileDto {
     this.description = description;
   }
 
-  public List<TesterDto> getTesters() {
-    return testers;
+  public Integer getNumberOfBugsByTester() {
+    return numberOfBugsByTester;
   }
 
-  public void setTesters(List<TesterDto> testers) {
-    this.testers = testers;
+  public void setNumberOfBugsByTester(Integer numberOfBugsByTester) {
+    this.numberOfBugsByTester = numberOfBugsByTester;
   }
 }

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class TesterController implements TesterApi {
@@ -17,7 +18,7 @@ public class TesterController implements TesterApi {
   }
 
   @Override
-  public List<TesterDto> getMostExperiencedTesters(String country, String deviceId) {
-    return testerService.getMostExperiencedTesters(Country.US, deviceId);
+  public List<TesterDto> getMostExperiencedTesters(Set<String> countries, Set<Long> deviceIds) {
+    return testerService.getMostExperiencedTesters(countries, deviceIds);
   }
 }

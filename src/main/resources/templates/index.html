@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../css/css-reset.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/common.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <title>Test Matcher</title>
+</head>
+<body>
+
+<form >
+    <div style="text-align: center">
+        <h1>Test Matcher</h1>
+        <br/><br/>
+        <Label>Country</Label>
+
+        <select name="countries" id="countries" multiple>
+            <option value="US">
+                All
+            </option>
+            <option value="US">
+                US
+            </option>
+            <option value="GB">
+                GB
+            </option>
+            <option value="JP">
+                JP
+            </option>
+
+        </select>
+        <Label>Device</Label>
+        <select name="deviceIds" id="deviceIds" multiple>
+            <option value="0">
+                All
+            </option>
+            <option value="1">
+                iPhone 4
+            </option>
+            <option value="2">
+                iPhone 4S
+            </option>
+            <option value="3">
+                iPhone 5
+            </option>
+            <option value="4">
+                Galaxy S3
+            </option>
+            <option value="5">
+                Galaxy S4
+            </option>
+            <option value="6">
+                Nexus 4
+            </option>
+            <option value="7">
+                Droid Razor
+            </option>
+            <option value="8">
+                Droid DNA
+            </option>
+            <option value="9">
+                HTC One
+            </option>
+
+            <option value="10">
+                iPhone 3
+            </option>
+        </select>
+        <br/>
+        <br/>
+        <br/>
+        <div>
+            <input type="submit" onclick="getExperiencedTester(countries, deviceIds)" value="Search" style="color: cadetblue; size: A4"/>
+        </div>
+
+    </div>
+</form>
+</body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="text/javascript">
+
+    function getExperiencedTester(countries, deviceIds) {
+
+        let apiUrl = '/api/v1/testers';
+
+       countries =  document.getElementById('countries').value;
+       deviceIds = document.getElementById('deviceIds').value;
+
+        if (countries !== undefined || deviceIds !== undefined) {
+            apiUrl = '/api/v1/testers?countries=' + countries + '&deviceIds=' + deviceIds;
+        }
+
+        $.ajax({
+           url: apiUrl,
+           type: 'GET',
+           context: document.body,
+       }).done(function (json) {
+           console.log(json);
+       });
+
+        // fetch(apiUrl).then(function(response) {
+        //     return response.json();
+        // }).then(function(data) {
+        //     console.log(data);
+        // }).catch(function() {
+        //     console.log("Booo");
+        // });
+
+           // $.get(apiUrl, function(data, status){
+           //     console.log("Data: " + data + "\nStatus: " + status);
+           // });
+
+    }
+
+
+</script>
+</html>

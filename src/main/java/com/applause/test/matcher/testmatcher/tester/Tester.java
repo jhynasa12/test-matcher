@@ -2,6 +2,8 @@ package com.applause.test.matcher.testmatcher.tester;
 
 import com.applause.test.matcher.testmatcher.bug.Bug;
 import com.applause.test.matcher.testmatcher.device.Mobile;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.List;
@@ -27,7 +29,8 @@ public class Tester {
   @Column(name = "last_login")
   private String lastLogin;
 
-  @OneToMany(mappedBy = "tester")
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "tester", cascade = CascadeType.ALL)
+  @Fetch(value = FetchMode.SUBSELECT)
   private List<Bug> bugs;
 
   @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -35,6 +38,7 @@ public class Tester {
       name = "tester_device",
       joinColumns = @JoinColumn(name = "tester_id", referencedColumnName = "tester_id"),
       inverseJoinColumns = @JoinColumn(name = "device_id", referencedColumnName = "device_id"))
+  @Fetch(value = FetchMode.SUBSELECT)
   private List<Mobile> mobileDevices;
 
   public Long getTesterId() {
@@ -93,20 +97,3 @@ public class Tester {
     this.mobileDevices = devices;
   }
 }
-
-// public class Professor {
-//    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//    @JoinTable(name = "ALUNO_PROFESSOR",
-//            joinColumns = @JoinColumn(name = "idProfessor", referencedColumnName = "idProfessor"),
-//            inverseJoinColumns = @JoinColumn(name = "idAluno", referencedColumnName = "idAluno"))
-//    private List<Aluno> alunoList;
-// }
-//
-// public class Aluno {
-//    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//    @JoinTable(name = "ALUNO_PROFESSOR",
-//            joinColumns = @JoinColumn(name = "idAluno", referencedColumnName = "idAluno"),
-//            inverseJoinColumns = @JoinColumn(name = "idProfessor", referencedColumnName =
-// "idProfessor"))
-//    private List<Professor> professorList;
-// }

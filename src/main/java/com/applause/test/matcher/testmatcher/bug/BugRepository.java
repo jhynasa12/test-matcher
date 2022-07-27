@@ -9,4 +9,6 @@ public interface BugRepository extends JpaRepository<Bug, Long> {
   List<Bug> findAllByTesterId(Long testerId);
 
   Integer countAllByTesterIdAndDeviceId(Long testerId, Long deviceId);
+
+  Bug findByTesterId(Long testerId);
 }

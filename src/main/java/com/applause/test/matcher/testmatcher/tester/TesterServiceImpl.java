@@ -1,16 +1,15 @@
 package com.applause.test.matcher.testmatcher.tester;
 
+import com.applause.test.matcher.testmatcher.bug.Bug;
 import com.applause.test.matcher.testmatcher.bug.BugService;
-import com.applause.test.matcher.testmatcher.device.BaseDevice;
-import com.applause.test.matcher.testmatcher.device.DeviceServiceImpl;
-import com.applause.test.matcher.testmatcher.device.Mobile;
+import com.applause.test.matcher.testmatcher.device.*;
+import com.applause.test.matcher.testmatcher.utils.Utility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,63 +17,71 @@ public class TesterServiceImpl implements TesterService {
   Logger logger = LoggerFactory.getLogger(TesterServiceImpl.class);
 
   private final TesterRepository testerRepository;
-  private final BugService bugService;
+  private final DeviceService deviceService;
 
   @Autowired
-  public TesterServiceImpl(TesterRepository testerRepository, BugService bugService) {
+  public TesterServiceImpl(TesterRepository testerRepository, DeviceService deviceService) {
     this.testerRepository = testerRepository;
-    this.bugService = bugService;
+    this.deviceService = deviceService;
   }
 
   @Override
-  public List<TesterDto> getMostExperiencedTesters(Country country, String deviceId) {
+  public List<TesterDto> getMostExperiencedTesters(Set<String> countries, Set<Long> deviceIds) {
 
     List<TesterDto> experiencedTesters = new ArrayList<>();
+    List<Tester> testersList;
 
-    // first get testers from the specified country
-    logger.debug("Getting testers by country: {}", country);
-    List<Tester> testersList = testerRepository.findAllByCountry(country);
+    testersList = testerRepository.findAll();
 
-    // has any of these users tested this device
-    testersList.forEach(
-        tester -> {
+    if ((countries != null && !countries.isEmpty())
+        && (deviceIds != null && !deviceIds.isEmpty())) {
 
-          // get the list of the testers devices and see if they tested it
-          boolean isTestedByUser =
-              tester.getMobileDevices().stream()
-                  .map(BaseDevice::getDeviceId)
-                  .collect(Collectors.toSet())
-                  .contains(Long.parseLong(deviceId));
-          if (isTestedByUser) {
+      // first get testers from the specified country or countries
+      logger.debug("Getting testers by country: {}", countries);
+      Set<Country> convertedCountries =
+          countries.stream().map(Country::valueOf).collect(Collectors.toSet());
+      testersList = testerRepository.findAllByCountryIn(convertedCountries);
+    }
 
-            int numberOfBugByDevice =
-                bugService.getNumberOfBugsFiledByTesterWithDevice(
-                    tester.getTesterId(), Long.parseLong(deviceId));
+    processTesterBugInformation(testersList, deviceIds);
 
-            List<Mobile> devicesById =
-                tester.getMobileDevices().stream()
-                    .filter(mobile -> mobile.getDeviceId() == Long.parseLong(deviceId))
-                    .collect(Collectors.toList());
-
-            tester.setMobileDevices(devicesById);
-
-            System.out.println(
-                "Tester: "
-                    + tester.getFirstName()
-                    + " tested "
-                    + devicesById.get(0).getDescription()
-                    + " "
-                    + numberOfBugByDevice
-                    + " times");
-
-            experiencedTesters.add(mapToTestDto(tester));
-          }
-        });
-
+    testersList.forEach(tester -> experiencedTesters.add(mapToTestDto(tester)));
     // order the users with the highest bug count for that device
     // Arrays.sort(experiencedTesters)
 
     return experiencedTesters;
+  }
+
+  private void processTesterBugInformation(List<Tester> testers, Set<Long> deviceIds) {
+
+    // if there are no device ids requested get All by default
+    if (deviceIds == null || deviceIds.isEmpty()) {
+      deviceIds =
+          deviceService.getAllDevices().stream()
+              .map(BaseDevice::getDeviceId)
+              .collect(Collectors.toSet());
+    }
+    // we have the testers for specified countries
+    // now get each tester's bugs for the specified devices
+    Set<Long> finalDeviceIds = deviceIds;
+    testers.forEach(
+        tester -> {
+          // set the number of bugs the tester found for each device
+          finalDeviceIds.forEach(
+              deviceId -> {
+                List<Bug> bugsByDevice =
+                    tester.getBugs().stream()
+                        .filter(bug -> Objects.equals(bug.getDeviceId(), deviceId))
+                        .collect(Collectors.toList());
+                BaseDevice device =
+                    tester.getMobileDevices().stream()
+                        .filter(mobile -> Objects.equals(mobile.getDeviceId(), deviceId))
+                        .collect(Utility.toSingleton());
+                if (device != null) {
+                  device.setNumberOfBugsByTester(bugsByDevice.size());
+                }
+              });
+        });
   }
 
   @Override
