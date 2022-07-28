@@ -5,6 +5,4 @@ import java.util.List;
 public interface DeviceService {
 
   List<BaseDevice> getAllDevices();
-
-  BaseDevice getDevice(Long deviceId);
 }

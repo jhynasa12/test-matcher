@@ -3,15 +3,31 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="../css/css-reset.css"/>
-    <link rel="stylesheet" type="text/css" href="../css/common.css"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .btn {
+            font-weight: bold;
+            border: 1px solid #091a34;
+            font-size: 18px;
+            border-radius: 30px;
+            background: #aaaaaa;
+        }
+
+        .defaultTextColor {
+            color: #091a34;
+        }
+
+        .font18 {
+            font-size: 18px;
+        }
+
+
+    </style>
 
     <title>Test Matcher</title>
 </head>
 <body>
 
-<form action="/api/v1/testers">
+<form class="defaultTextColor font18" action="/api/v1/testers">
     <div style="text-align: center">
         <h1>Test Matcher</h1>
         <br/><br/>
@@ -70,21 +86,16 @@
         <br/>
         <br/>
         <div>
-            <input type="submit" value="Search" style="color: cadetblue; size: A4"/>
+            <input class="btn" type="submit" value="Search" style="color: cadetblue; size: A4"/>
         </div>
-
-        <!--        <label>Countries: </label>-->
-        <!--        <p id="countriesValues" th:text="${param.countries}">Test</p>-->
-        <!--        <label>Device Ids: </label>-->
-        <!--        <p id="deviceIdsValues" th:text="${param.deviceIds}">Test</p>-->
 
         <br/>
         <div th:each="tester : ${testers}">
-            <div th:text="${tester.firstName + ' ' + tester.lastName} +' tested: ' ">
+            <div th:text="${tester.firstName + ' ' + tester.lastName} +' filed bugs for: ' ">
             </div>
             <div th:each="device : ${tester.mobileDevices}">
-                <span th:text=" ${device.description} + ' device ' ">test</span>
-                <span th:text=" ${device.numberOfBugsByTester} + ' times.'">test</span>
+                <span th:text=" ${device.description} + ' has ' ">test</span>
+                <span th:text="${device.numberOfBugsByTester} + ' bugs filed.'">test</span>
             </div>
             <br/>
         </div>
@@ -92,6 +103,4 @@
     </div>
 </form>
 </body>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </html>

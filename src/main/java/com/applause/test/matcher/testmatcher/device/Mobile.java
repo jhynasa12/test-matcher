@@ -1,6 +1,5 @@
 package com.applause.test.matcher.testmatcher.device;
 
-import com.applause.test.matcher.testmatcher.bug.Bug;
 import com.applause.test.matcher.testmatcher.tester.Tester;
 
 import javax.persistence.*;

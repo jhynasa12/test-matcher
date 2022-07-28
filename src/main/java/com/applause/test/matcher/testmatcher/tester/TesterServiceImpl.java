@@ -79,7 +79,7 @@ public class TesterServiceImpl implements TesterService {
                             Long.valueOf(device.getDeviceId()));
                     device.setNumberOfBugsByTester(numberOfBugsForDevice);
                   });
-          
+
           // order the testers with the highest bug count for that device
           testerDto
               .getMobileDevices()
