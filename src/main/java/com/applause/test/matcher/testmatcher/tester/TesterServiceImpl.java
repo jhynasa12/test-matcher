@@ -1,10 +1,7 @@
 package com.applause.test.matcher.testmatcher.tester;
 
-import com.applause.test.matcher.testmatcher.bug.Bug;
 import com.applause.test.matcher.testmatcher.bug.BugService;
 import com.applause.test.matcher.testmatcher.device.*;
-import com.applause.test.matcher.testmatcher.mapper.TesterDeviceMapper;
-import com.applause.test.matcher.testmatcher.utils.Utility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +34,7 @@ public class TesterServiceImpl implements TesterService {
 
     testersList = testerRepository.findAll();
 
-    if ((countries != null && !countries.isEmpty())
-        && (deviceIds != null && !deviceIds.isEmpty())) {
+    if (countries != null && !countries.isEmpty()) {
 
       // first get testers from the specified country or countries
       logger.debug("Getting testers by country: {}", countries);
@@ -48,12 +44,12 @@ public class TesterServiceImpl implements TesterService {
     }
 
     Set<Long> finalDeviceIds =
-        deviceIds != null && deviceIds.contains(0L)
+        deviceIds != null && !deviceIds.contains(0L)
             ? deviceIds
             : deviceService.getAllDevices().stream()
                 .map(BaseDevice::getDeviceId)
                 .collect(Collectors.toSet());
-    ;
+
     testersList.forEach(
         tester -> tester.getBugs().removeIf(bug -> !finalDeviceIds.contains(bug.getDeviceId())));
 
@@ -65,29 +61,36 @@ public class TesterServiceImpl implements TesterService {
 
     testersList.forEach(tester -> experiencedTesters.add(mapToTestDto(tester)));
 
-    //    // order the testers with the highest bug count for that device
-    //    experiencedTesters.forEach(
-    //        tester ->
-    //            tester.getBugs()
-    //                .sort(Comparator.comparing(tester.getBugs().size()).reversed()));
-
     experiencedTesters.removeIf(testerDto -> testerDto.getMobileDevices().isEmpty());
 
     experiencedTesters.forEach(
-        testerDto -> {
-          testerDto
-              .getMobileDevices()
-              .forEach(
-                  device -> {
-                    int numberOfBugsForDevice =
-                        bugService.getNumberOfBugsFiledByTesterWithDevice(
-                            Long.valueOf(testerDto.getTesterId()),
-                            Long.valueOf(device.getDeviceId()));
-                    device.setNumberOfBugsByTester(numberOfBugsForDevice);
-                  });
-        });
+        testerDto ->
+            testerDto
+                .getMobileDevices()
+                .forEach(
+                    device -> {
+                      int numberOfBugsForDevice =
+                          bugService.getNumberOfBugsFiledByTesterWithDevice(
+                              Long.valueOf(testerDto.getTesterId()),
+                              Long.valueOf(device.getDeviceId()));
+                      device.setNumberOfBugsByTester(numberOfBugsForDevice);
+                    }));
 
-    return experiencedTesters;
+    // order the testers with the highest bug count for that device
+    experiencedTesters.forEach(
+        tester ->
+            tester
+                .getMobileDevices()
+                .sort(Comparator.comparing(MobileDto::getNumberOfBugsByTester).reversed()));
+
+    List<TesterDto> finalList =
+        experiencedTesters.stream()
+            .sorted(Comparator.comparing(testerDto -> testerDto.getBugs().size()))
+            .collect(Collectors.toList());
+
+    Collections.reverse(finalList);
+
+    return finalList;
   }
 
   @Override
