@@ -64,8 +64,6 @@ public class TesterServiceImpl implements TesterService {
           experiencedTesters.add(mapToTestDto(tester));
         });
 
-    experiencedTesters.removeIf(testerDto -> testerDto.getMobileDevices().isEmpty());
-
     experiencedTesters.forEach(
         testerDto -> {
           // get number of bugs for device

@@ -91,16 +91,31 @@
 
         <br/>
         <div th:each="tester : ${testers}">
-            <div th:text="${tester.firstName + ' ' + tester.lastName} +' filed bugs for: ' ">
+            <div th:text="${tester.firstName + ' ' + tester.lastName} +' filed bugs for: ' "></div>
+
+            <div th:if="${not #lists.isEmpty(tester.mobileDevices)}">
+                <div th:each="device : ${tester.mobileDevices}">
+                    <span th:text=" ${device.description} + ' has ' ">test</span>
+                    <span th:text="${device.numberOfBugsByTester} + ' bugs filed.'">test</span>
+                </div>
             </div>
-            <div th:each="device : ${tester.mobileDevices}">
-                <span th:text=" ${device.description} + ' has ' ">test</span>
-                <span th:text="${device.numberOfBugsByTester} + ' bugs filed.'">test</span>
+            <div th:if="${#lists.isEmpty(tester.mobileDevices)}">
+                <span th:text="'0 bugs filed for current devices.'">test</span>
             </div>
-            <br/>
+
+            <br />
+
         </div>
+        <br/>
+    </div>
 
     </div>
 </form>
 </body>
+<script type="text/javascript">
+
+    document.
+
+
+</script>
 </html>
