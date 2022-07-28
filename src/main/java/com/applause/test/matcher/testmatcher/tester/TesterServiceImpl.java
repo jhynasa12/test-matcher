@@ -106,7 +106,7 @@ public class TesterServiceImpl implements TesterService {
     return testerRepository.findById(testerId).orElse(null);
   }
 
-  private TesterDto mapToTestDto(Tester tester) {
+  public TesterDto mapToTestDto(Tester tester) {
     return new TesterDto(
         String.valueOf(tester.getTesterId()),
         tester.getFirstName(),

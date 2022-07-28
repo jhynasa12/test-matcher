@@ -1,0 +1,96 @@
+swagger: "2.0"
+info:
+  description: "This the TestMatcher API service"
+  version: "1.0.0"
+  title: "Test Matcher Api"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "hyland.justin12@gmail.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:8080"
+basePath: "/api/v1"
+tags:
+- name: "test-matcher"
+  description: "Get experienced testers based on countries and device ids"
+schemes:
+- "https"
+- "http"
+paths:
+  /testers:
+    get:
+      tags:
+      - "tester"
+      summary: "Gets experienced testers list"
+      description: ""
+      operationId: "getExperiencedTesters"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "query"
+        name: "countries"
+        description: "Countries the testers are from"
+        required: false
+        type: array
+        items:
+          type: string
+      - in: "query"
+        name: "deviceIds"
+        description: "ids of devices"
+        required: false
+        type: array
+        items:
+          type: integer
+      responses:
+        200:
+          description: A list of testers
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/TesterDto'
+definitions:
+  TesterDto:
+    type: "object"
+    properties:
+      testerId:
+        type: "string"
+      firstName:
+        type: "string"
+      lastName:
+        type: "string"
+      country:
+        type: "string"
+      lastLogin:
+        type: "string"
+      mobileDevices:
+        type: array
+        items:
+         $ref: '#/definitions/MobileDto'
+      bugs:
+        type: array
+        items:
+         $ref: '#/definitions/BugDto'
+  MobileDto:
+    type: "object"
+    properties:
+     deviceId:
+      type: string
+     description:
+      type: string
+     numberOfBugsByTester:
+      type: integer
+  BugDto:
+    type: "object"
+    properties:
+     bugId:
+      type: string
+     deviceId:
+      type: string
+     testerId:
+      type: string
+      
