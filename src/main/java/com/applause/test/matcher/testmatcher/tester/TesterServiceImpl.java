@@ -30,17 +30,17 @@ public class TesterServiceImpl implements TesterService {
   public List<TesterDto> getMostExperiencedTesters(Set<String> countries, Set<Long> deviceIds) {
 
     List<TesterDto> experiencedTesters = new ArrayList<>();
-    List<Tester> testersList;
+    List<Tester> testersFromDB;
 
-    testersList = testerRepository.findAll();
+    // grab all testers by default if no country is specified
+    testersFromDB = testerRepository.findAll();
 
     if (countries != null && !countries.isEmpty()) {
-
-      // first get testers from the specified country or countries
+      // get testers from the specified countries
       logger.debug("Getting testers by country: {}", countries);
       Set<Country> convertedCountries =
           countries.stream().map(Country::valueOf).collect(Collectors.toSet());
-      testersList = testerRepository.findAllByCountryIn(convertedCountries);
+      testersFromDB = testerRepository.findAllByCountryIn(convertedCountries);
     }
 
     Set<Long> finalDeviceIds =
@@ -50,38 +50,41 @@ public class TesterServiceImpl implements TesterService {
                 .map(BaseDevice::getDeviceId)
                 .collect(Collectors.toSet());
 
-    testersList.forEach(
-        tester -> tester.getBugs().removeIf(bug -> !finalDeviceIds.contains(bug.getDeviceId())));
+    testersFromDB.forEach(
+        tester -> {
+          // remove bugs that are not in device Ids
+          tester.getBugs().removeIf(bug -> !finalDeviceIds.contains(bug.getDeviceId()));
 
-    testersList.forEach(
-        tester ->
-            tester
-                .getMobileDevices()
-                .removeIf(device -> !finalDeviceIds.contains(device.getDeviceId())));
+          // remove devices that are not in device ids
+          tester
+              .getMobileDevices()
+              .removeIf(device -> !finalDeviceIds.contains(device.getDeviceId()));
 
-    testersList.forEach(tester -> experiencedTesters.add(mapToTestDto(tester)));
+          // map to Dtos
+          experiencedTesters.add(mapToTestDto(tester));
+        });
 
     experiencedTesters.removeIf(testerDto -> testerDto.getMobileDevices().isEmpty());
 
     experiencedTesters.forEach(
-        testerDto ->
-            testerDto
-                .getMobileDevices()
-                .forEach(
-                    device -> {
-                      int numberOfBugsForDevice =
-                          bugService.getNumberOfBugsFiledByTesterWithDevice(
-                              Long.valueOf(testerDto.getTesterId()),
-                              Long.valueOf(device.getDeviceId()));
-                      device.setNumberOfBugsByTester(numberOfBugsForDevice);
-                    }));
-
-    // order the testers with the highest bug count for that device
-    experiencedTesters.forEach(
-        tester ->
-            tester
-                .getMobileDevices()
-                .sort(Comparator.comparing(MobileDto::getNumberOfBugsByTester).reversed()));
+        testerDto -> {
+          // get number of bugs for device
+          testerDto
+              .getMobileDevices()
+              .forEach(
+                  device -> {
+                    int numberOfBugsForDevice =
+                        bugService.getNumberOfBugsFiledByTesterWithDevice(
+                            Long.valueOf(testerDto.getTesterId()),
+                            Long.valueOf(device.getDeviceId()));
+                    device.setNumberOfBugsByTester(numberOfBugsForDevice);
+                  });
+          
+          // order the testers with the highest bug count for that device
+          testerDto
+              .getMobileDevices()
+              .sort(Comparator.comparing(MobileDto::getNumberOfBugsByTester).reversed());
+        });
 
     List<TesterDto> finalList =
         experiencedTesters.stream()
