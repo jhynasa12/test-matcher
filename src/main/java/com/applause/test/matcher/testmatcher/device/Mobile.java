@@ -17,16 +17,6 @@ public class Mobile extends BaseDevice {
     super();
   }
 
-  @Transient private List<Bug> bugs;
-
-  public List<Bug> getBugs() {
-    return bugs;
-  }
-
-  public void setBugs(List<Bug> bugs) {
-    this.bugs = bugs;
-  }
-
   public List<Tester> getTesters() {
     return testers;
   }

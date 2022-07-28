@@ -19,11 +19,14 @@ public class TesterServiceImpl implements TesterService {
 
   private final TesterRepository testerRepository;
   private final DeviceService deviceService;
+  private final BugService bugService;
 
   @Autowired
-  public TesterServiceImpl(TesterRepository testerRepository, DeviceService deviceService) {
+  public TesterServiceImpl(
+      TesterRepository testerRepository, DeviceService deviceService, BugService bugService) {
     this.testerRepository = testerRepository;
     this.deviceService = deviceService;
+    this.bugService = bugService;
   }
 
   @Override
@@ -44,56 +47,47 @@ public class TesterServiceImpl implements TesterService {
       testersList = testerRepository.findAllByCountryIn(convertedCountries);
     }
 
-    if (deviceIds != null && deviceIds.contains(0L)) {
-      deviceIds =
-          deviceService.getAllDevices().stream()
-              .map(BaseDevice::getDeviceId)
-              .collect(Collectors.toSet());
-    }
-    processTesterBugInformation(testersList, deviceIds);
+    Set<Long> finalDeviceIds =
+        deviceIds != null && deviceIds.contains(0L)
+            ? deviceIds
+            : deviceService.getAllDevices().stream()
+                .map(BaseDevice::getDeviceId)
+                .collect(Collectors.toSet());
+    ;
+    testersList.forEach(
+        tester -> tester.getBugs().removeIf(bug -> !finalDeviceIds.contains(bug.getDeviceId())));
 
-    testersList.forEach(tester -> experiencedTesters.add(mapToTestDto(tester)));
-
-    // order the testers with the highest bug count for that device
-    experiencedTesters.forEach(
+    testersList.forEach(
         tester ->
             tester
                 .getMobileDevices()
-                .sort(Comparator.comparing(MobileDto::getNumberOfBugsByTester).reversed()));
+                .removeIf(device -> !finalDeviceIds.contains(device.getDeviceId())));
+
+    testersList.forEach(tester -> experiencedTesters.add(mapToTestDto(tester)));
+
+    //    // order the testers with the highest bug count for that device
+    //    experiencedTesters.forEach(
+    //        tester ->
+    //            tester.getBugs()
+    //                .sort(Comparator.comparing(tester.getBugs().size()).reversed()));
+
+    experiencedTesters.removeIf(testerDto -> testerDto.getMobileDevices().isEmpty());
+
+    experiencedTesters.forEach(
+        testerDto -> {
+          testerDto
+              .getMobileDevices()
+              .forEach(
+                  device -> {
+                    int numberOfBugsForDevice =
+                        bugService.getNumberOfBugsFiledByTesterWithDevice(
+                            Long.valueOf(testerDto.getTesterId()),
+                            Long.valueOf(device.getDeviceId()));
+                    device.setNumberOfBugsByTester(numberOfBugsForDevice);
+                  });
+        });
 
     return experiencedTesters;
-  }
-
-  private void processTesterBugInformation(List<Tester> testers, Set<Long> deviceIds) {
-
-    // if there are no device ids requested get All by default
-    if (deviceIds == null || deviceIds.isEmpty()) {
-      deviceIds =
-          deviceService.getAllDevices().stream()
-              .map(BaseDevice::getDeviceId)
-              .collect(Collectors.toSet());
-    }
-    // we have the testers for specified countries
-    // now get each tester's bugs for the specified devices
-    Set<Long> finalDeviceIds = deviceIds;
-    testers.forEach(
-        tester -> {
-          // set the number of bugs the tester found for each device
-          finalDeviceIds.forEach(
-              deviceId -> {
-                List<Bug> bugsByDevice =
-                    tester.getBugs().stream()
-                        .filter(bug -> Objects.equals(bug.getDeviceId(), deviceId))
-                        .collect(Collectors.toList());
-                BaseDevice device =
-                    tester.getMobileDevices().stream()
-                        .filter(mobile -> Objects.equals(mobile.getDeviceId(), deviceId))
-                        .collect(Utility.toSingleton());
-                if (device != null) {
-                  device.setNumberOfBugsByTester(bugsByDevice.size());
-                }
-              });
-        });
   }
 
   @Override
@@ -113,6 +107,7 @@ public class TesterServiceImpl implements TesterService {
         tester.getLastName(),
         String.valueOf(tester.getCountry()),
         tester.getLastLogin(),
-        DeviceServiceImpl.mapToMobileDto(tester.getMobileDevices()));
+        DeviceServiceImpl.mapToMobileDto(tester.getMobileDevices()),
+        bugService.mapBugDtos(tester.getBugs()));
   }
 }

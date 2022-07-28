@@ -1,5 +1,6 @@
 package com.applause.test.matcher.testmatcher.bug;
 
+import com.applause.test.matcher.testmatcher.device.BaseDevice;
 import com.applause.test.matcher.testmatcher.tester.Tester;
 
 import javax.persistence.*;
@@ -21,6 +22,10 @@ public class Bug {
   @ManyToOne
   @JoinColumn(name = "fk_tester_id", nullable = false, insertable = false, updatable = false)
   private Tester tester;
+
+  @ManyToOne
+  @JoinColumn(name = "device_id", nullable = false, insertable = false, updatable = false)
+  private BaseDevice device;
 
   public Long getBugId() {
     return bugId;
@@ -52,5 +57,13 @@ public class Bug {
 
   public void setTester(Tester tester) {
     this.tester = tester;
+  }
+
+  public BaseDevice getDevice() {
+    return device;
+  }
+
+  public void setDevice(BaseDevice device) {
+    this.device = device;
   }
 }

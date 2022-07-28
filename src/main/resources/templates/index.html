@@ -76,15 +76,20 @@
             <input type="submit" value="Search" style="color: cadetblue; size: A4"/>
         </div>
 
-        <p hidden id="deviceIdsValues" th:text="${param.deviceIds}">Test</p>
-        <p id="countriesValues" hidden th:text="${param.countries}">Test</p>
+        <!--        <label>Countries: </label>-->
+        <!--        <p id="countriesValues" th:text="${param.countries}">Test</p>-->
+        <!--        <label>Device Ids: </label>-->
+        <!--        <p id="deviceIdsValues" th:text="${param.deviceIds}">Test</p>-->
 
+        <br/>
         <div th:each="tester : ${testers}">
-            <div th:text="${tester.firstName + ' ' + tester.lastName}"></div>
-                <div th:each="device : ${tester.mobileDevices}">
-                    <p th:text="${device.description}">test</p>
-                    <p th:text="${device.numberOfBugsByTester}">test</p>
-                </div>
+            <div th:text="${tester.firstName + ' ' + tester.lastName} +' tested: ' ">
+            </div>
+            <div th:each="device : ${tester.mobileDevices}">
+                <span th:text=" ${device.description} + ' device ' ">test</span>
+                <span th:text=" ${device.numberOfBugsByTester} + ' times.'">test</span>
+            </div>
+            <br/>
         </div>
 
     </div>
@@ -92,20 +97,4 @@
 </body>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script th:inline="javascript">
-
-
-    let countries = document.getElementById('countries').value;
-    let deviceIds = document.getElementById('deviceIds').value;
-
-    const testers = [[${testers}]];
-
-    console.log(testers);
-
-        var name = [[${testers.firstName + ' ' + user.lastName}]];
-        var email = [[${user.email}]];
-        var age = [[${user.age}]];
-        var createdAt = [[${#dates.format(user.created, 'EEE, MMMM dd, yyyy')}]];
-
-</script>
 </html>

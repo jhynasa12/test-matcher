@@ -6,5 +6,5 @@ public interface BugService {
 
   List<Bug> findAllByTesterId(Long testerId);
   Integer getNumberOfBugsFiledByTesterWithDevice(Long testId, Long deviceId);
-  BugDto mapBugDto(Bug bug);
+  List<BugDto> mapBugDtos(List<Bug> bug);
 }

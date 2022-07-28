@@ -21,13 +21,15 @@ public class TesterDto {
       String lastName,
       String country,
       String lastLogin,
-      List<MobileDto> mobileDevices) {
+      List<MobileDto> mobileDevices,
+      List<BugDto> bugs) {
     this.testerId = testerId;
     this.firstName = firstName;
     this.lastName = lastName;
     this.country = country;
     this.lastLogin = lastLogin;
     this.mobileDevices = mobileDevices;
+    this.bugs = bugs;
   }
 
   public String getTesterId() {
@@ -76,5 +78,13 @@ public class TesterDto {
 
   public void setMobileDevices(List<MobileDto> mobileDevices) {
     this.mobileDevices = mobileDevices;
+  }
+
+  public List<BugDto> getBugs() {
+    return bugs;
+  }
+
+  public void setBugs(List<BugDto> bugs) {
+    this.bugs = bugs;
   }
 }

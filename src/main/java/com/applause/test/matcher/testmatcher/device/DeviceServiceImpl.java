@@ -21,6 +21,11 @@ public class DeviceServiceImpl implements DeviceService {
     return deviceRepository.findAll();
   }
 
+  @Override
+  public BaseDevice getDevice(Long deviceId) {
+    return deviceRepository.findById(deviceId).orElse(null);
+  }
+
   public static List<MobileDto> mapToMobileDto(List<Mobile> mobileList) {
     List<MobileDto> mobileDtos = new ArrayList<>();
     mobileList.forEach(
